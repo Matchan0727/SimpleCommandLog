@@ -1,0 +1,38 @@
+name: SimpleCommandLog
+version: '${project.version}'
+main: jp.simplespace.simplecommandlog.bukkit.SimpleCommandLog
+authors: [ Matchan ]
+description: シンプルなコマンドログ
+website: https://simplespace.jp
+
+commands:
+  scl:
+    description: コマンドログを有効化
+    usage: /<command>
+    aliases: [cmdlog,cl]
+  eval:
+    description: evalコマンド
+    usage: /<command>
+    permission: scl.command.eval
+  stl:
+    description: 入力ログを有効化
+    usage: /<command>
+    aliases: [typelog,tl]
+
+permissions:
+  scl.*:
+    description: 全ての権限
+    default: op
+    children:
+      scl.command.scl: true
+      scl.command.eval: true
+      scl.command.stl: true
+  scl.command.scl:
+    description: sclコマンドの権限
+    default: op
+  scl.command.eval:
+    description: evalコマンドの権限
+    default: op
+  scl.command.stl:
+    description: stlコマンドの権限
+    default: op

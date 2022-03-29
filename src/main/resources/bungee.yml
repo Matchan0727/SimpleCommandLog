@@ -1,0 +1,5 @@
+name: SimpleCommandLog
+version: '${project.version}'
+main: jp.simplespace.simplecommandlog.bungee.BSimpleCommandLog
+author: Matchan
+description: シンプルなコマンドログ
