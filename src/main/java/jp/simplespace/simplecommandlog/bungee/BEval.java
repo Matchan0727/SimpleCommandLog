@@ -11,6 +11,7 @@ import javax.script.ScriptEngine;
 import java.util.HashMap;
 import java.util.Map;
 
+import static jp.simplespace.simplecommandlog.bukkit.SimpleCommandLog.config;
 import static jp.simplespace.simplecommandlog.bungee.BSimpleCommandLog.plugin;
 import static jp.simplespace.simplecommandlog.bungee.BSimpleCommandLog.proxy;
 
@@ -23,6 +24,10 @@ public class BEval extends Command {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
+        if(!config.getBoolean("eval")){
+            sender.sendMessage(org.bukkit.ChatColor.RED+"評価機能は無効化されています。\nconfig.ymlを確認してください。");
+            return;
+        }
         if(!map.containsKey(sender)){
             ScriptEngine se = new NashornScriptEngineFactory().getScriptEngine();
             se.put("plugin", plugin);

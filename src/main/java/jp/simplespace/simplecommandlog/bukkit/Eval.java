@@ -13,13 +13,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+import static jp.simplespace.simplecommandlog.bukkit.SimpleCommandLog.config;
 import static jp.simplespace.simplecommandlog.bukkit.SimpleCommandLog.plugin;
 
 public class Eval implements CommandExecutor {
     private static final Map<CommandSender,ScriptEngine> map = new HashMap<>();
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
+        if(!config.getBoolean("eval")){
+            sender.sendMessage(ChatColor.RED+"評価機能は無効化されています。\nconfig.ymlを確認してください。");
+            return true;
+        }
         if(!map.containsKey(sender)){
             ScriptEngine se = new NashornScriptEngineFactory().getScriptEngine();
             se.put("plugin", plugin);
