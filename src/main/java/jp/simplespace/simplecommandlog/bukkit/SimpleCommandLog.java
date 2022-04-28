@@ -29,8 +29,11 @@ public final class SimpleCommandLog extends JavaPlugin {
 
         //configの生成
         saveDefaultConfig();
-        reloadConfig();
         config = plugin.getConfig();
+        if(!config.isBoolean("eval")){
+            config.set("eval",false);
+            saveConfig();
+        }
     }
 
     @Override

@@ -39,6 +39,10 @@ public class BSimpleCommandLog extends Plugin {
         saveDefaultConfig();
         try {
             config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(new File(getDataFolder(),"config.yml"));
+            if(!config.getBoolean("eval",false)){
+                config.set("eval",false);
+                saveConfig(config);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -66,5 +70,8 @@ public class BSimpleCommandLog extends Plugin {
                 e.printStackTrace();
             }
         }
+    }
+    public void saveConfig(Configuration config) throws IOException {
+        ConfigurationProvider.getProvider(YamlConfiguration.class).save(config,new File(getDataFolder(),"config.yml"));
     }
 }

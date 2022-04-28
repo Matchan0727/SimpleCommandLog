@@ -24,7 +24,7 @@ public class BEval extends Command {
 
     @Override
     public void execute(CommandSender sender, String[] args) {
-        if(!config.getBoolean("eval")){
+        if(!config.getBoolean("eval",false)){
             sender.sendMessage(org.bukkit.ChatColor.RED+"評価機能は無効化されています。\nconfig.ymlを確認してください。");
             return;
         }

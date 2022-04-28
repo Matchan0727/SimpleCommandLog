@@ -20,7 +20,7 @@ public class Eval implements CommandExecutor {
     private static final Map<CommandSender,ScriptEngine> map = new HashMap<>();
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if(!config.getBoolean("eval")){
+        if(!config.getBoolean("eval",false)){
             sender.sendMessage(ChatColor.RED+"評価機能は無効化されています。\nconfig.ymlを確認してください。");
             return true;
         }
