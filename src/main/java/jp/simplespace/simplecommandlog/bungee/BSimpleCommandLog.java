@@ -72,4 +72,7 @@ public class BSimpleCommandLog extends Plugin {
     public void saveConfig(Configuration config) throws IOException {
         ConfigurationProvider.getProvider(YamlConfiguration.class).save(config,new File(getDataFolder(),"config.yml"));
     }
+    public static Logger getLog(){
+        return logger;
+    }
 }

@@ -59,11 +59,12 @@ public class BCmdLog extends Command implements Listener {
             return;
         }
         ProxiedPlayer sender = (ProxiedPlayer) event.getSender();
-
+        TextComponent component = new TextComponent(ChatColor.GRAY + "[CL] "+sender.getServer().getInfo().getName()+"@" + sender.getName() + " " + event.getMessage());
+        BSimpleCommandLog.getLog().info(component.getText());
         List<String> list = config.getStringList("cmdlog.players");
         for(String puuid : list){
             ProxiedPlayer p = proxy.getPlayer(UUID.fromString(puuid));
-            if(p!=null) p.sendMessage(new TextComponent(ChatColor.GRAY + "[CL] "+sender.getServer().getInfo().getName()+"@" + sender.getName() + " " + event.getMessage()));
+            if(p!=null) p.sendMessage(component);
         }
     }
 }

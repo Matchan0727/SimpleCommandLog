@@ -40,6 +40,8 @@ public class VEval implements SimpleCommand {
             se.put("NamedTextColor","net.kyori.adventure.text.format.NamedTextColor");
             se.put("source",source);
             if(source instanceof Player) se.put("player",(Player)source);
+            se.put("config",configData);
+            se.put("yaml",VSimpleCommandLog.getYaml());
             map.put(source,se);
         }
         ScriptEngine se = map.get(source);

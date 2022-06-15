@@ -76,15 +76,18 @@ public class VSimpleCommandLog {
     public static void saveConfig(ConfigData configData){
         String str = yaml.dump(configData);
         try {
-            OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(config),StandardCharsets.UTF_8);
-            BufferedWriter bw = new BufferedWriter(osw);
-            bw.write(str);
+            FileWriter fw = new FileWriter(config);
+            fw.write(str);
+            fw.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
     public static ConfigData getConfigData(){
         return configData;
+    }
+    public static Yaml getYaml(){
+        return yaml;
     }
     public static void saveDefaultConfig(){
         if(!dataDirectory.toFile().exists()) dataDirectory.toFile().mkdir();

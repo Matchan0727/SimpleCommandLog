@@ -33,6 +33,3 @@ permissions:
   scl.command.eval:
     description: evalコマンドの権限
     default: op
-  scl.command.stl:
-    description: stlコマンドの権限
-    default: op
