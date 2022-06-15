@@ -50,8 +50,6 @@ public class VEval implements SimpleCommand {
         catch(Exception e) {
             source.sendMessage(Component.text().append(Component.text("例外がスローされました:\n",NamedTextColor.RED)).append(Component.text(e.getLocalizedMessage(),NamedTextColor.WHITE)).build());
         }
-        System.out.println(Arrays.toString(invocation.arguments()));
-        System.out.println(String.join(" ",invocation.arguments()));
     }
 
     @Override
