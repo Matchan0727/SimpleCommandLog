@@ -13,10 +13,7 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import java.util.List;
 import java.util.UUID;
 
-import static jp.simplespace.simplecommandlog.bukkit.SimpleCommandLog.prefix;
-import static jp.simplespace.simplecommandlog.bukkit.SimpleCommandLog.plugin;
-import static jp.simplespace.simplecommandlog.bukkit.SimpleCommandLog.config;
-import static jp.simplespace.simplecommandlog.bukkit.SimpleCommandLog.noPermission;
+import static jp.simplespace.simplecommandlog.bukkit.SimpleCommandLog.*;
 
 public class CmdLog implements CommandExecutor,Listener {
     @Override

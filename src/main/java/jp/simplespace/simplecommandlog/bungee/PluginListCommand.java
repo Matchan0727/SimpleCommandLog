@@ -7,7 +7,6 @@ import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.Plugin;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class PluginListCommand extends Command {

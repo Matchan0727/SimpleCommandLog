@@ -1,13 +1,9 @@
 package jp.simplespace.simplecommandlog.bukkit;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.slf4j.Logger;
-
-import javax.script.ScriptEngineManager;
 
 public final class SimpleCommandLog extends JavaPlugin {
     public static String prefix = ChatColor.AQUA+"[SCL] "+ChatColor.RESET;
@@ -22,10 +18,8 @@ public final class SimpleCommandLog extends JavaPlugin {
         //コマンドの登録
         getCommand("scl").setExecutor(new CmdLog());
         getCommand("eval").setExecutor(new Eval());
-        getCommand("stl").setExecutor(new TypeLog());
         //イベントリスナーの登録
         getServer().getPluginManager().registerEvents(new CmdLog(),this);
-        getServer().getPluginManager().registerEvents(new TypeLog(),this);
 
         //configの生成
         saveDefaultConfig();
@@ -33,6 +27,7 @@ public final class SimpleCommandLog extends JavaPlugin {
         if(!config.isBoolean("eval")){
             config.set("eval",false);
             saveConfig();
+
         }
     }
 

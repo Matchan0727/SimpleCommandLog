@@ -33,7 +33,8 @@ public class BEval extends Command {
             se.put("plugin", plugin);
             se.put("proxy", proxy);
             se.put("ChatColor","net.md_5.bungee.api.ChatColor");
-            se.put("player",(ProxiedPlayer)sender);
+            se.put("sender",sender);
+            if(sender instanceof ProxiedPlayer) se.put("player",(ProxiedPlayer)sender);
             map.put(sender,se);
         }
         ScriptEngine se = map.get(sender);
@@ -42,7 +43,7 @@ public class BEval extends Command {
             sender.sendMessage(new TextComponent(ChatColor.GREEN+"成功しました:\n"+ChatColor.RESET+se.eval(String.join(" ",args))));
         }
         catch(Exception e) {
-            sender.sendMessage(new TextComponent(ChatColor.RED+ "例外がスローされました:\n" +ChatColor.RESET+ e));
+            sender.sendMessage(new TextComponent(ChatColor.RED+ "例外がスローされました:\n" +ChatColor.RESET+ e.getLocalizedMessage()));
         }
     }
 }

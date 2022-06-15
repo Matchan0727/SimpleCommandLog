@@ -31,10 +31,8 @@ public class BSimpleCommandLog extends Plugin {
         pm.registerCommand(this,new BCmdLog());
         pm.registerCommand(this,new BEval());
         pm.registerCommand(this,new PluginListCommand());
-        pm.registerCommand(this,new BTypeLog());
         //イベントリスナーの登録
         pm.registerListener(this,new BCmdLog());
-        pm.registerListener(this,new BTypeLog());
         //configの生成
         saveDefaultConfig();
         try {
