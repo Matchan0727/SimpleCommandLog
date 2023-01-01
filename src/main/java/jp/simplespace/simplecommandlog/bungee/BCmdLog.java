@@ -1,5 +1,7 @@
 package jp.simplespace.simplecommandlog.bungee;
 
+import jp.simplespace.simplecommandlog.redisbungee.CommandLogListener;
+import jp.simplespace.simplecommandlog.redisbungee.ToggleListener;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -33,18 +35,38 @@ public class BCmdLog extends Command implements Listener {
             if(p.hasPermission("scl.command.scl")){
                 List<String> list = config.getStringList("cmdlog.players");
                 if (list.contains(p.getUniqueId().toString())){
-                    list.remove(p.getUniqueId().toString());
-                    p.sendMessage(new TextComponent(prefix + ChatColor.GRAY + "コマンドログ表示を無効にしました。"));
+                    if(!BSimpleCommandLog.enableRedisBungee){
+                        list.remove(p.getUniqueId().toString());
+                        p.sendMessage(new TextComponent(prefix + ChatColor.GRAY + "コマンドログ表示を無効にしました。"));
+                    }
+                    else {
+                        try {
+                            ToggleListener.sendChannelMessage(p.getUniqueId().toString(),false);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
                 }
                 else {
-                    list.add(p.getUniqueId().toString());
-                    p.sendMessage(new TextComponent(prefix + ChatColor.GRAY + "コマンドログ表示を有効にしました。"));
+                    if(!BSimpleCommandLog.enableRedisBungee){
+                        list.add(p.getUniqueId().toString());
+                        p.sendMessage(new TextComponent(prefix + ChatColor.GRAY + "コマンドログ表示を有効にしました。"));
+                    }
+                    else {
+                        try {
+                            ToggleListener.sendChannelMessage(p.getUniqueId().toString(),true);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
                 }
-                config.set("cmdlog.players",list);
-                try {
-                    ConfigurationProvider.getProvider(YamlConfiguration.class).save(config,new File(plugin.getDataFolder(),"config.yml"));
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if(!BSimpleCommandLog.enableRedisBungee) {
+                    config.set("cmdlog.players",list);
+                    try {
+                        ConfigurationProvider.getProvider(YamlConfiguration.class).save(config,new File(plugin.getDataFolder(),"config.yml"));
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
             else p.sendMessage(new TextComponent(noPermission));
@@ -59,8 +81,27 @@ public class BCmdLog extends Command implements Listener {
             return;
         }
         ProxiedPlayer sender = (ProxiedPlayer) event.getSender();
-        TextComponent component = new TextComponent(ChatColor.GRAY + "[CL] "+sender.getServer().getInfo().getName()+"@" + sender.getName() + " " + event.getMessage());
-        BSimpleCommandLog.getLog().info(component.getText());
+        String serverName = sender.getServer().getInfo().getName();
+        String senderName = sender.getName();
+        String message = event.getMessage();
+        if(!BSimpleCommandLog.enableRedisBungee){
+            TextComponent component = createTextComponent(serverName,senderName,message);
+            BSimpleCommandLog.getLog().info(component.getText());
+            sendCommandLogMessage(component);
+        }
+        //有効だったら
+        else {
+            try {
+                CommandLogListener.sendChannelMessage(serverName,senderName,message);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+    public static TextComponent createTextComponent(String serverName,String senderName,String message){
+        return new TextComponent(ChatColor.GRAY + "[CL] "+senderName+"@" + serverName + " " + message);
+    }
+    public static void sendCommandLogMessage(TextComponent component){
         List<String> list = config.getStringList("cmdlog.players");
         for(String puuid : list){
             ProxiedPlayer p = proxy.getPlayer(UUID.fromString(puuid));

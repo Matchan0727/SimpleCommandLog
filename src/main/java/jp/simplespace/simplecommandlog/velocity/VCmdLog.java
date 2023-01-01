@@ -4,7 +4,6 @@ import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.command.RawCommand;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.command.CommandExecuteEvent;
-import com.velocitypowered.api.event.player.PlayerChatEvent;
 import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.ProxyServer;
 import jp.simplespace.simplecommandlog.ConfigData;
@@ -50,12 +49,12 @@ public class VCmdLog implements RawCommand {
     //コマンドログをログ表示を有効にしているプレイヤーに送信。
     @Subscribe
     public void onCommandExecute(CommandExecuteEvent event) {
-        if(!(event.getCommandSource() instanceof Player sender)) return;
+        if(!(event.getCommandSource() instanceof Player)) return;
+        Player sender = (Player) event.getCommandSource();
         ProxyServer proxy = VSimpleCommandLog.getServer();
-
         ConfigData data = VSimpleCommandLog.getConfigData();
         List<String> list = new ArrayList<>(data.getCmdlog().get("players"));
-        TextComponent component = Component.text("[CL] " + sender.getCurrentServer().get().getServerInfo().getName() + "@" + sender.getUsername() + " /" + event.getCommand(), NamedTextColor.GRAY);
+        TextComponent component = Component.text("[CL] " + sender.getUsername() + "@" + sender.getCurrentServer().get().getServerInfo().getName() + " /" + event.getCommand(), NamedTextColor.GRAY);
         VSimpleCommandLog.getLogger().info(component.content());
         for (String puuid : list) {
             Player p = proxy.getPlayer(UUID.fromString(puuid)).get();

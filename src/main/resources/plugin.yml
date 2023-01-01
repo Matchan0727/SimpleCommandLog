@@ -1,5 +1,5 @@
 name: SimpleCommandLog
-version: '${project.version}'
+version: @version@
 main: jp.simplespace.simplecommandlog.bukkit.SimpleCommandLog
 authors: [ Matchan ]
 description: シンプルなコマンドログ

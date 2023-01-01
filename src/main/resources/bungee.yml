@@ -1,5 +1,6 @@
 name: SimpleCommandLog
-version: '${project.version}'
+version: @version@
 main: jp.simplespace.simplecommandlog.bungee.BSimpleCommandLog
 author: Matchan
 description: シンプルなコマンドログ
+softDepends: [RedisBungee]

@@ -15,12 +15,10 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import org.slf4j.Logger;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.CustomClassLoaderConstructor;
-
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
-@Plugin(id = "simplecommandlog", name = "SimpleCommandLog", version = "1.4",
+@Plugin(id = "simplecommandlog", name = "SimpleCommandLog", version = "1.7",
         url = "https://simplespace.jp", description = "シンプルなコマンドログ", authors = {"Matchan"})
 public class VSimpleCommandLog {
     private static ProxyServer server;
