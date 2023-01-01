@@ -1,8 +1,8 @@
 package jp.simplespace.simplecommandlog.bungee;
 
 import com.imaginarycode.minecraft.redisbungee.RedisBungeeAPI;
-import jp.simplespace.simplecommandlog.redisbungee.CommandLogListener;
-import jp.simplespace.simplecommandlog.redisbungee.ToggleListener;
+import jp.simplespace.simplecommandlog.redisbungee.BCommandLogListener;
+import jp.simplespace.simplecommandlog.redisbungee.BToggleListener;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.plugin.Plugin;
@@ -37,8 +37,8 @@ public class BSimpleCommandLog extends Plugin {
             RedisBungeeAPI rapi = RedisBungeeAPI.getRedisBungeeApi();
             rapi.registerPubSubChannels("scl_cmdlog");
             rapi.registerPubSubChannels("scl_toggle");
-            pm.registerListener(this,new CommandLogListener());
-            pm.registerListener(this,new ToggleListener());
+            pm.registerListener(this,new BCommandLogListener());
+            pm.registerListener(this,new BToggleListener());
         }
         //コマンドの登録
         pm.registerCommand(this,new BCmdLog());

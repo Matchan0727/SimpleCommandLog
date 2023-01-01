@@ -1,14 +1,21 @@
 package jp.simplespace.simplecommandlog.velocity;
 
 import com.google.inject.Inject;
+import com.imaginarycode.minecraft.redisbungee.RedisBungeeAPI;
 import com.velocitypowered.api.command.CommandManager;
 import com.velocitypowered.api.command.CommandMeta;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
+import com.velocitypowered.api.plugin.Dependency;
 import com.velocitypowered.api.plugin.Plugin;
+import com.velocitypowered.api.plugin.PluginManager;
 import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
 import jp.simplespace.simplecommandlog.ConfigData;
+import jp.simplespace.simplecommandlog.redisbungee.CommandLogListener;
+import jp.simplespace.simplecommandlog.redisbungee.ToggleListener;
+import jp.simplespace.simplecommandlog.redisbungee.VCommandLogListener;
+import jp.simplespace.simplecommandlog.redisbungee.VToggleListener;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -19,7 +26,10 @@ import java.io.*;
 import java.nio.file.Path;
 
 @Plugin(id = "simplecommandlog", name = "SimpleCommandLog", version = "1.7",
-        url = "https://simplespace.jp", description = "シンプルなコマンドログ", authors = {"Matchan"})
+        url = "https://simplespace.jp", description = "シンプルなコマンドログ", authors = {"Matchan"},
+        dependencies = {
+            @Dependency(id = "redisbungee",optional = true)
+        })
 public class VSimpleCommandLog {
     private static ProxyServer server;
     private static Logger logger;
@@ -29,6 +39,7 @@ public class VSimpleCommandLog {
     private static ConfigData configData;
     public static TextComponent prefix = Component.text().append(Component.text("[VSCL] ",NamedTextColor.AQUA)).append(Component.text("",NamedTextColor.WHITE)).build();
     public static TextComponent noPermission = Component.text().append(prefix).append(Component.text("あなたに実行する権限はありません。",NamedTextColor.RED)).append(Component.text("",NamedTextColor.WHITE)).build();
+    public static boolean enableRedisBungee = false;
 
     @Inject
     public VSimpleCommandLog(ProxyServer server, Logger logger, @DataDirectory Path dataDirectory) {
@@ -54,6 +65,15 @@ public class VSimpleCommandLog {
                 .metaBuilder("veval")
                 .build();
         commandManager.register(evalMeta,new VEval());
+        PluginManager pm = server.getPluginManager();
+        enableRedisBungee = pm.getPlugin("redisbungee").isPresent();
+        if(enableRedisBungee){
+            RedisBungeeAPI rapi = RedisBungeeAPI.getRedisBungeeApi();
+            rapi.registerPubSubChannels("scl_cmdlog");
+            rapi.registerPubSubChannels("scl_toggle");
+            server.getEventManager().register(this,new VCommandLogListener());
+            server.getEventManager().register(this,new VToggleListener());
+        }
     }
     public static ProxyServer getServer(){
         return server;

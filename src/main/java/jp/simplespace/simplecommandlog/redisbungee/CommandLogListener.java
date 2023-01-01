@@ -8,6 +8,8 @@ import com.imaginarycode.minecraft.redisbungee.events.PubSubMessageEvent;
 import com.velocitypowered.api.event.Subscribe;
 import jp.simplespace.simplecommandlog.bungee.BCmdLog;
 import jp.simplespace.simplecommandlog.bungee.BSimpleCommandLog;
+import jp.simplespace.simplecommandlog.velocity.VCmdLog;
+import jp.simplespace.simplecommandlog.velocity.VSimpleCommandLog;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
@@ -16,27 +18,8 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 
-public class CommandLogListener implements Listener {
-    private final Gson gson = new Gson();
-    @EventHandler
-    public void onBungeePubSubMessage(PubSubMessageEvent event){
-        if(!event.getChannel().equals("scl_cmdlog")){
-            return;
-        }
-        JsonObject jsonObject = gson.fromJson(event.getMessage(),JsonObject.class);
-        String serverName = jsonObject.get("server").getAsString();
-        String senderName = jsonObject.get("sender").getAsString();
-        String message = jsonObject.get("message").getAsString();
-        TextComponent component = BCmdLog.createTextComponent(serverName,senderName,message);
-        BSimpleCommandLog.getLog().info(component.getText());
-        BCmdLog.sendCommandLogMessage(component);
-    }
-    @Subscribe
-    public void onVelocityPubSubMessage(PubSubMessageEvent event){
-        if(!event.getChannel().equals("scl_cmdlog")){
-            return;
-        }
-    }
+public class CommandLogListener {
+    final Gson gson = new Gson();
     public static String serializeJson(String server,String sender,String message) throws IOException {
         StringWriter stringWriter = new StringWriter();
         JsonWriter jsonWriter = new JsonWriter(new BufferedWriter(stringWriter));

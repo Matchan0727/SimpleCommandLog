@@ -1,7 +1,7 @@
 package jp.simplespace.simplecommandlog.bungee;
 
-import jp.simplespace.simplecommandlog.redisbungee.CommandLogListener;
-import jp.simplespace.simplecommandlog.redisbungee.ToggleListener;
+import jp.simplespace.simplecommandlog.redisbungee.BCommandLogListener;
+import jp.simplespace.simplecommandlog.redisbungee.BToggleListener;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -41,7 +41,7 @@ public class BCmdLog extends Command implements Listener {
                     }
                     else {
                         try {
-                            ToggleListener.sendChannelMessage(p.getUniqueId().toString(),false);
+                            BToggleListener.sendChannelMessage(p.getUniqueId().toString(),false);
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
@@ -54,7 +54,7 @@ public class BCmdLog extends Command implements Listener {
                     }
                     else {
                         try {
-                            ToggleListener.sendChannelMessage(p.getUniqueId().toString(),true);
+                            BToggleListener.sendChannelMessage(p.getUniqueId().toString(),true);
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
@@ -92,7 +92,7 @@ public class BCmdLog extends Command implements Listener {
         //有効だったら
         else {
             try {
-                CommandLogListener.sendChannelMessage(serverName,senderName,message);
+                BCommandLogListener.sendChannelMessage(serverName,senderName,message);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
