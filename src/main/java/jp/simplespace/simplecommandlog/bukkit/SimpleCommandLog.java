@@ -1,9 +1,16 @@
 package jp.simplespace.simplecommandlog.bukkit;
 
+import com.github.fracpete.jshell.JShellExec;
+import com.github.fracpete.jshell.event.JShellExecListener;
+import com.google.gson.Gson;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.BufferedReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public final class SimpleCommandLog extends JavaPlugin {
     public static String prefix = ChatColor.AQUA+"[SCL] "+ChatColor.RESET;

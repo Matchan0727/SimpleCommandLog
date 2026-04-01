@@ -20,12 +20,14 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.slf4j.Logger;
+import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.constructor.CustomClassLoaderConstructor;
 import java.io.*;
 import java.nio.file.Path;
 
-@Plugin(id = "simplecommandlog", name = "SimpleCommandLog", version = "1.7",
+@Plugin(id = "simplecommandlog", name = "SimpleCommandLog", version = "1.8.0",
         url = "https://simplespace.jp", description = "シンプルなコマンドログ", authors = {"Matchan"},
         dependencies = {
             @Dependency(id = "redisbungee",optional = true)
@@ -51,7 +53,7 @@ public class VSimpleCommandLog {
     }
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
-        yaml = new Yaml(new CustomClassLoaderConstructor(VSimpleCommandLog.class.getClassLoader()));
+        yaml = new Yaml(new Constructor(ConfigData.class, new LoaderOptions()));
         saveDefaultConfig();
         configData = getNewConfigData();
         CommandManager commandManager = server.getCommandManager();
