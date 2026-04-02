@@ -20,10 +20,14 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.slf4j.Logger;
+import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.constructor.CustomClassLoaderConstructor;
+import org.yaml.snakeyaml.nodes.Tag;
+import org.yaml.snakeyaml.representer.Representer;
+
 import java.io.*;
 import java.nio.file.Path;
 
@@ -53,7 +57,28 @@ public class VSimpleCommandLog {
     }
     @Subscribe
     public void onProxyInitialization(ProxyInitializeEvent event) {
-        yaml = new Yaml(new Constructor(ConfigData.class, new LoaderOptions()));
+        // 1. 読み込みの設定 (LoaderOptions)
+        LoaderOptions loaderOptions = new LoaderOptions();
+        // セキュリティ制限を回避し、自作クラスのタグを許可する
+        loaderOptions.setTagInspector(tag ->
+                tag.getValue().equals("tag:yaml.org,2002:jp.simplespace.simplecommandlog.ConfigData") ||
+                        tag.getValue().equals(org.yaml.snakeyaml.nodes.Tag.MAP.getValue())
+        );
+
+        // 2. クラスローダー対策 (Constructor)
+        // 第一引数に ConfigData.class を渡すことで、プラグインのクラスローダーが使用されます
+        Constructor constructor = new Constructor(ConfigData.class, loaderOptions);
+
+        // 3. 書き出しの設定 (DumperOptions & Representer)
+        DumperOptions dumperOptions = new DumperOptions();
+        dumperOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+
+        Representer representer = new Representer(dumperOptions);
+        // 修正方法2：保存時に !!jp.simplespace... を付けない設定
+        representer.addClassTag(ConfigData.class, Tag.MAP);
+
+        // 4. すべての設定を統合して Yaml インスタンスを作成
+        yaml = new Yaml(constructor, representer, dumperOptions);
         saveDefaultConfig();
         configData = getNewConfigData();
         CommandManager commandManager = server.getCommandManager();
